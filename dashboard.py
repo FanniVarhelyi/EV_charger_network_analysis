@@ -25,12 +25,10 @@ map = load_geodata('Input files/map.gpkg')
 
 
 ########################
-## Main information and sidebar control panel setup
-st.title("Spatial clustering analysis: a tutorial")
 
 # Page layout options
 option = st.sidebar.radio(
-    "Choose a page:",
+    "Spatial clustering analysis: a tutorial\n\nTable of contents:",
     ('Introduction', 'Datasets', 'Clustering intro', 'Analysis and results', 'Conclusion')
 )
 
@@ -61,10 +59,10 @@ elif option == 'Datasets':
 
 elif option == 'Clustering intro':
     st.image('Input images/clustering.jpg')
-    st.header("What is clustering?")
+    st.header(":green[What is clustering?]")
     
     st.divider()
-    st.header("K-means method")
+    st.header(":orange[K-means method]")
 
     st.caption('*\*Sources: [YouTube channel](https://www.youtube.com/channel/UCrxw8iiyFalKHFNAhZYCAYA/videos)*.')
 
@@ -73,7 +71,7 @@ elif option == 'Clustering intro':
 ######################################################################## 
 elif option == 'Analysis and results':
     st.image('Input images/results.jpg')
-    st.header("Analysis plan")
+    st.header(":violet[Analysis plan]")
     
 ########################################################################
 ## PAGE 5: CONCLUSIONS
