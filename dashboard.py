@@ -39,7 +39,7 @@ option = st.sidebar.radio(
 ########################################################################
 if option == 'Introduction':
     st.image('Input images/cover.jpg')
-    st.header(":blue[Welcome!]")
+    st.subheader(":green[Welcome!]")
 
     st.markdown('As global environmental challenges continue to escalate, understanding how to most effectively leverage modern technology innovations for conservation impact becomes increasingly critical. Each year, **WILD**LABS surveys the global conservation tech community to find out what you all are working on, what challenges you\'re facing, what support you need, and what you foresee on the horizon. Our aims in this research are to build an evidence base to share back with and support the community, to use the insights produced to create more informed and effective **WILD**LABS programs, and to communicate shared priorities to influence policy and funding decisions that will benefit our sector as a whole.  \n  \nFor the State of Conservation Technology 2023 report, we\'ve built on our 2021 results to conduct a three-year trends analysis,  bringing you insights for the first time into how dynamics have been evolving across the community over time. By highlighting shifting opinions as well as stabilizing trends in technology usage, user and developer challenges, opportunities for growth, and more, we aimed to illuminate the most useful information for advancing the sector together in a more effective and inclusive way. As always, our hope with this research is to amplify a united voice to drive progress toward impactful solutions for the planet.')
     
@@ -48,7 +48,7 @@ if option == 'Introduction':
 ########################################################################
 elif option == 'Datasets':
     st.image('Input images/datasets.jpg')
-    st.subheader(":red[What should we look for?]")
+    st.subheader(":green[What should we look for?]")
 
 
     st.caption('*\*Data sources: [Census Bureau](https://www.census.gov/programs-surveys/acs), [Department of Energy](https://afdc.energy.gov/fuels/electricity_locations.html#/find/nearest?fuel=ELEC), [MIT Election Data and Science Lab](https://electionlab.mit.edu/data).*')
@@ -59,10 +59,10 @@ elif option == 'Datasets':
 
 elif option == 'Clustering intro':
     st.image('Input images/clustering.jpg')
-    st.header(":green[What is clustering?]")
+    st.subheader(":green[What is clustering?]")
     
     st.divider()
-    st.header(":orange[K-means method]")
+    st.subheader(":green[K-means method]")
 
     st.caption('*\*Sources: [YouTube channel](https://www.youtube.com/channel/UCrxw8iiyFalKHFNAhZYCAYA/videos)*.')
 
@@ -71,7 +71,7 @@ elif option == 'Clustering intro':
 ######################################################################## 
 elif option == 'Analysis and results':
     st.image('Input images/results.jpg')
-    st.header(":violet[Analysis plan]")
+    st.subheader(":green[Analysis plan]")
     
 ########################################################################
 ## PAGE 5: CONCLUSIONS
