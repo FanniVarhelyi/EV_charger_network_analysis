@@ -15,6 +15,7 @@ def load_data(filename):
 df = load_data('Input files/final_data.csv')
 charger_snap = load_data('Input files/charger_snap.csv')
 sum_stats = load_data('Input files/sum_stats.csv')
+clustering = load_data('Input files/clustering_results.csv')
 
 # Note: the data is already preprocessed which is not included in this file (will be included in the final project submission)
 
@@ -135,9 +136,44 @@ elif option == 'Clustering intro':
 ######################################################################## 
 elif option == 'Analysis and results':
     st.image('Input images/results.jpg')
-    st.subheader(":green[Analysis plan]")
+    st.subheader(":green[Analysis]")
+
+    st.markdown('For our analysis, we will leverage the popular machine learning library scicit learn, or sklearn. Sklearn can help both preprocess our data and implement the clustering model.\n\nPreprocessing is important when clustering: it ensures we account for differences in scale. In our case, many of our variables are already on the same scale: we`re using percentages for motiple variables. Regardless, it makes sense to standardize all variables. This can be achieved as follows:')
+
+    code3 = '''
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.cluster import KMeans
+
+    x = ev_chargers.drop(columns=['county_fips', 'state_y',
+                              'county_name', 'state_po',
+                              'state_party'])
+    x['party'] =  x['party'].replace({'REPUBLICAN': 0, 'DEMOCRAT': 1})
+
+    x = pd.DataFrame(StandardScaler().fit_transform(x))
+    '''
+
+    st.code(code3, language = 'python')
+
+    st.markdown('After preprocessing the data, we can finally decide what the optimal number of clusters would be. To do so, we would like to find a number of clusters that minimizes the overall error in our clusters. In other words, we\'re looking for clusters that are well-formed, don\'t overlap, and make sense. Let\'s take a look at this overall error (the sum of squared errors or SSE to be precise) for a k between 1 and 16.')
+
+    st.image('sse.png')
+
+    st.markdown('An optimal number would probably be 7 clusters. Using this information, we can run the clustering algorithm with k = 7.')
+
+    code4 = '''
+    km = KMeans(n_clusters=7, init='random', random_state=0)
+    km_clusters = km.fit_predict(x)
+    '''
+
+    st.code(code4, language = 'python')
+
+    st.markdown('We can see a snapshot of the results below.')
+
+    st.table(clustering.sample(10))
 
     st.subheader(":green[Results]")
+
+    st.markdown('To understand the results, we could, for example, look at the summary statistics again, but by clusters.')
     
 ########################################################################
 ## PAGE 5: CONCLUSIONS
