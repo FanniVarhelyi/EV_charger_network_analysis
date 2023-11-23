@@ -156,7 +156,7 @@ elif option == 'Analysis and results':
 
     st.markdown('After preprocessing the data, we can finally decide what the optimal number of clusters would be. To do so, we would like to find a number of clusters that minimizes the overall error in our clusters. In other words, we\'re looking for clusters that are well-formed, don\'t overlap, and make sense. Let\'s take a look at this overall error (the sum of squared errors or SSE to be precise) for a k between 1 and 16.')
 
-    st.image('sse.jpg')
+    st.image('Input images/sse.jpg')
 
     st.markdown('An optimal number would probably be 7 clusters. Using this information, we can run the clustering algorithm with k = 7.')
 
