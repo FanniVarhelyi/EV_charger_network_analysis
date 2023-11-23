@@ -16,6 +16,7 @@ df = load_data('Input files/final_data.csv')
 charger_snap = load_data('Input files/charger_snap.csv')
 sum_stats = load_data('Input files/sum_stats.csv')
 clustering = load_data('Input files/clustering_results.csv')
+clust_stats = load_data('Input files/cluster_stats.csv')
 
 # Note: the data is already preprocessed which is not included in this file (will be included in the final project submission)
 
@@ -174,6 +175,8 @@ elif option == 'Analysis and results':
     st.subheader(":green[Results]")
 
     st.markdown('To understand the results, we could, for example, look at the summary statistics again, but by clusters.')
+
+    st.table(clust_stats)
     
 ########################################################################
 ## PAGE 5: CONCLUSIONS
