@@ -1,14 +1,6 @@
-﻿Variable,Mean,Std. Dev.,Min,Median,max,,,,
-Population,4 421,2 287,0,4 122,70 271,,,,
-Household,1 639,813,0,1 540,21 337,,,,
-Percentage of pop. below poverty line,0.15,0.11,0,0.12,1,,,,
-Households with 0 cars,141,230,0,81,6 059,,,,
-Households with 1 or more cars,1 497,792,0,1 406,21 015,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
-,,,,,,,,,
+﻿Variable,Mean,Std. Dev.,Min,Median,max
+Population,4 421,2 287,0,4 122,70 271
+Household,1 639,813,0,1 540,21 337
+Percentage of pop. below poverty line,0.15,0.11,0,0.12,1
+Households with 0 cars,141,230,0,81,6 059
+Households with 1 or more cars,1 497,792,0,1 406,21 015
