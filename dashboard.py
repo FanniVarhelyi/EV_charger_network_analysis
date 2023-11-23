@@ -13,6 +13,8 @@ from plotly.subplots import make_subplots
 def load_data(filename):
     return pd.read_csv(filename)
 df = load_data('Input files/final_data.csv')
+charger_snap = load_data('Input files/charger_snap.csv')
+sum_stats = load_data('Input files/sum_stats.csv')
 
 # Note: the data is already preprocessed which is not included in this file (will be included in the final project submission)
 
@@ -56,22 +58,9 @@ elif option == 'Datasets':
 
     st.markdown('The primary data source for this research is the location of electric vehicle charging stations in the United States, which is available from the U.S. Department of Energy. This dataset contains the location of 58 857 charging stations and contains 71 further attributes. Of these attributes, the most important ones for this project will be location. Here\'s a summary look on the state level of the available total charging stations:')
 
-    latex_table = r'''
-        \begin{tabular}{|l|r|r|r|r|r|r|r|r|r|}
-        \hline
-        State & Total & ChargePoint Network & Tesla Destination & Non-Networked & Blink Network & FLO & Tesla & eVgo Network & Other \\ \hline
-        CA    & 15312 & 10385              & 734               & 849           & 681           & 459 & 396   & 358          & 1450  \\ \hline
-        NY    & 3632  & 1885               & 471               & 268           & 160           & 58  & 83    & 25           & 682   \\ \hline
-        FL    & 3248  & 1363               & 341               & 229           & 599           & 1   & 145   & 27           & 543   \\ \hline
-        TX    & 2943  & 1422               & 298               & 171           & 383           & 0   & 137   & 64           & 468   \\ \hline
-        MA    & 2673  & 2177               & 51                & 99            & 76            & 25  & 46    & 19           & 180   \\ \hline
-        CO    & 2044  & 1315               & 94                & 165           & 228           & 3   & 37    & 32           & 170   \\ \hline
-        WA    & 2009  & 1003               & 113               & 173           & 324           & 26  & 50    & 30           & 290   \\ \hline
-        GA    & 1776  & 1012               & 151               & 134           & 202           & 2   & 45    & 32           & 198   \\ \hline
-        PA    & 1578  & 822                & 98                & 195           & 153           & 10  & 72    & 24           & 204   \\ \hline
-        MD    & 1558  & 537                & 53                & 185           & 336           & 0   & 52    & 29           & 366   \\ \hline
-        \end{tabular}
-        '''
+    st.table(charger_snap)
+
+    
 
     # Display the LaTeX table in Streamlit
     st.markdown(latex_table, unsafe_allow_html=True)
@@ -112,7 +101,11 @@ elif option == 'Datasets':
 
     st.code(code2,language='python')
 
-    st.markdown('Once we have the number of chargers per census tract, we can easily merge this with any census variables we would like to include in our analysis. In this case, I selected total population, cars per household, poverty, and racial attributes. Unfortunately, when looking at our third dataset, we can see that information is not available on a census tract level. This is understadable: tracts are smaller than voter districts. Thus, we will need to aggregate again to have the same unit of analysis for all of our data. In this case, this will be a county level. Once we\'ve done this, and selected the relevant variables, we have our data ready for analysis!')
+    st.markdown('Once we have the number of chargers per census tract, we can easily merge this with any census variables we would like to include in our analysis. In this case, I selected total population, cars per household, poverty, and racial attributes. When working with data like this, it\'s often useful to check the summary statistics for the relevant variables:')
+
+    st.table(sum_stats)
+    
+    st.markdown('Unfortunately, when looking at our third dataset, we can see that information is not available on a census tract level. This is understadable: tracts are smaller than voter districts. Thus, we will need to aggregate again to have the same unit of analysis for all of our data. In this case, this will be a county level. Once we\'ve done this, and selected the relevant variables, we have our data ready for analysis!')
 
 
     st.caption('*Data sources: [Census Bureau](https://www.census.gov/programs-surveys/acs), [Department of Energy](https://afdc.energy.gov/fuels/electricity_locations.html#/find/nearest?fuel=ELEC), [MIT Election Data and Science Lab](https://electionlab.mit.edu/data).*')
