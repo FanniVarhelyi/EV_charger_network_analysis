@@ -58,7 +58,7 @@ elif option == 'Datasets':
 
     st.markdown('The primary data source for this research is the location of electric vehicle charging stations in the United States, which is available from the U.S. Department of Energy. This dataset contains the location of 58 857 charging stations and contains 71 further attributes. Of these attributes, the most important ones for this project will be location. Here\'s a summary look on the state level of the available total charging stations:')
 
-    st.table(charger_snap)
+    st.table(charger_snap.iloc[:9,:])
 
     
 
@@ -102,7 +102,7 @@ elif option == 'Datasets':
 
     st.markdown('Once we have the number of chargers per census tract, we can easily merge this with any census variables we would like to include in our analysis. In this case, I selected total population, cars per household, poverty, and racial attributes. When working with data like this, it\'s often useful to check the summary statistics for the relevant variables:')
 
-    st.table(sum_stats)
+    st.table(sum_stats.iloc[:4,:5])
     
     st.markdown('Unfortunately, when looking at our third dataset, we can see that information is not available on a census tract level. This is understadable: tracts are smaller than voter districts. Thus, we will need to aggregate again to have the same unit of analysis for all of our data. In this case, this will be a county level. Once we\'ve done this, and selected the relevant variables, we have our data ready for analysis!')
 
@@ -118,9 +118,15 @@ elif option == 'Datasets':
 elif option == 'Clustering intro':
     st.image('Input images/clustering.jpg')
     st.subheader(":green[What is clustering?]")
+
+    st.markdown('Clustering is a well-known unsupervised machine learning method used to identify homogeneous groups using information within a dataset. We can use the multi-dimensional shape of the data, the density, or any hierarchical attributes for the clustering analysis.')
+
+    st.markdown('While density could be an interesting aspect of this spatial data, the urban-rural density difference would likely hamper the effectiveness of any density-based research. The data isn’t hierarchical. Thus, I plan on leveraging K-means clustering.')
     
     st.divider()
     st.subheader(":green[K-means method]")
+
+    st.markdown('K-means separates data into a pre-specified number of clusters. It assigns each observation to one cluster (so no observation can belong to multiple clusters) and it minimizes within-cluster variation for non-overlapping clusters. A key characteristic of this method is that we need to pick the number of clusters (k) upfront. We will see in the analysis section how we can determine the optimal number of k with our dataset.')
 
     st.caption('*\*Sources: [YouTube channel](https://www.youtube.com/channel/UCrxw8iiyFalKHFNAhZYCAYA/videos)*.')
 
