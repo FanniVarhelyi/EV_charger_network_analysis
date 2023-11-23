@@ -62,8 +62,7 @@ elif option == 'Datasets':
 
     
 
-    # Display the LaTeX table in Streamlit
-    st.markdown(latex_table, unsafe_allow_html=True)
+    
 
     st.markdown('We can see that certain networks have much greater amount of stations that others. This doesn\'t feel right knowing the basic attributes of existing providers. Thus, it might make sense to investigate the addresses: potentially, some of our data might be on the charger level, not the charging table level. This seems to be the case, and aggregation based on addresses solves the issue:')
 
