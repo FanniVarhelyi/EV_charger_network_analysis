@@ -128,7 +128,7 @@ elif option == 'Clustering intro':
 
     st.markdown('K-means separates data into a pre-specified number of clusters. It assigns each observation to one cluster (so no observation can belong to multiple clusters) and it minimizes within-cluster variation for non-overlapping clusters. A key characteristic of this method is that we need to pick the number of clusters (k) upfront. We will see in the analysis section how we can determine the optimal number of k with our dataset.')
 
-    st.caption('*\*Sources: [YouTube channel](https://www.youtube.com/channel/UCrxw8iiyFalKHFNAhZYCAYA/videos)*.')
+    st.caption('*\*Sources: Data Science III course, 2023 Fall semester, Georgetown University*.')
 
 ########################################################################
 ## PAGE 4: ANALYSIS
@@ -136,6 +136,8 @@ elif option == 'Clustering intro':
 elif option == 'Analysis and results':
     st.image('Input images/results.jpg')
     st.subheader(":green[Analysis plan]")
+
+    st.subheader(":green[Results]")
     
 ########################################################################
 ## PAGE 5: CONCLUSIONS
