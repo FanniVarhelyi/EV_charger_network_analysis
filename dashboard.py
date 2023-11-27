@@ -285,7 +285,7 @@ elif option == 'Analysis and results':
 
     st.markdown('To understand the results, we could, for example, look at the summary statistics again, but by clusters.')
 
-    st.table(clust_stats[:-1])
+    st.table(clust_stats.iloc[:, :-1])
 
     st.markdown('Alternatively, we could also take a look at a map again to visualize the clusters.')
 
