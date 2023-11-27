@@ -154,6 +154,23 @@ elif option == 'Datasets':
 
 
     #####ADD MAP
+    variables = ['Political party (county)',
+       '% of households with 2 or more cars',
+       'Number of Level 3 chargers', 'Number of Level 1 chargers',
+       'Number of Level 2 chargers',
+       '% of Non-Hispanic Black population',
+       '% of Hispanic population',
+       '% of the population in poverty',
+       '% of white population']
+    choice = st.selectbox('Variable', variables)
+
+    fig3 = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+                           color_continuous_scale="Viridis",
+                           scope="usa",
+                           labels={choice}
+                          )
+    fig3.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    st.pyplot(fig3)
 
     st.markdown('Looking at counties on the country level, however, can make it difficult to understand local characteristics, so we can also zoom in on a given state and then look at our variables. Exploratory data analysis and visualizations such as these can help us better understand the data, which in turn will influence some of our design choices later on for the analysis.')
 
