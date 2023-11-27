@@ -164,13 +164,24 @@ elif option == 'Datasets':
        '% of white population']
     choice = st.selectbox('Variable', variables)
 
-    fig3 = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
-                           color_continuous_scale="Viridis",
-                           scope="usa",
-                           labels={choice}
-                          )
-    fig3.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    st.pyplot(fig3)
+    if choice == 'Political party (county)':
+    # Define the discrete color map for political parties
+        color_map = {'REPUBLICAN': 'red', 'DEMOCRAT': 'blue'}
+
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+                            color_discrete_map=color_map,
+                            scope="usa",
+                            labels={choice: 'Political Party'})
+    else:
+        # Use a continuous color scale
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+                            color_continuous_scale="Viridis",
+                            scope="usa",
+                            labels={choice: choice})
+
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.show()
+    #st.pyplot(fig)
 
     st.markdown('Looking at counties on the country level, however, can make it difficult to understand local characteristics, so we can also zoom in on a given state and then look at our variables. Exploratory data analysis and visualizations such as these can help us better understand the data, which in turn will influence some of our design choices later on for the analysis.')
 
