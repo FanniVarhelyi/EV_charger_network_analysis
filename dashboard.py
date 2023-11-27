@@ -311,7 +311,7 @@ elif option == 'Analysis and results':
                             scope="usa",
                             labels={choice5: 'Political Party'})
     elif choice5 == 'Cluster':
-        df['Cluster'] = df['Cluster'].astype(str)
+        #df['Cluster'] = df['Cluster'].astype(str)
         # Define a discrete color map for clusters
         # You can customize this list of colors as needed
         cluster_colors = px.colors.qualitative.Plotly
