@@ -136,7 +136,7 @@ elif option == 'Datasets':
     st.markdown('Another interesting way to look at our data and understand it\'s attributes is using visualizations. The next graph showcases the distribution of a given variable, while the following map of the United States shows the county-level value of a selected variable.')
 
     ####ADD BOXPLOT
-    variables = ['Political party (county)',
+    variables = [
        '% of households with 2 or more cars',
        'Number of Level 3 chargers', 'Number of Level 1 chargers',
        'Number of Level 2 chargers',
@@ -145,32 +145,12 @@ elif option == 'Datasets':
        '% of the population in poverty',
        '% of white population']
     choice = st.selectbox('Variable', variables)
-    if choice == 'Political party  (county)':
-        #group by on state level, # of counties republican / democrat
-        #100% stacked bar chart, blue-red
-        df2 = df.groupby(['State','Political party (county)'])['County'].agg('count').reset_index()
-        df2['County'] = df2['County'].astype(int)
-        df2.fillna(0, inplace=True)
-        fig = px.histogram(df2, 
-                y='State', 
-                x='County', 
-                title="Party Distribution by State",
-                color='Political party (county)',
-                barnorm='percent',
-                #orientation='h', 
-                text_auto=False)
-
-        fig.update_layout(barmode='stack', 
-                        yaxis_title="State",
-                        xaxis_title='County-level political association') 
-
-        st.pyplot(fig)
-    else:
-        fig2 = plt.figure(figsize=(8, 6))
-        sns.boxplot(x=df[choice])
-        plt.title('Exploratory data analysis')
-        plt.xlabel(f'Variable: {choice}')
-        st.pyplot(fig2)
+    
+    fig2 = plt.figure(figsize=(8, 6))
+    sns.boxplot(x=df[choice])
+    plt.title('Exploratory data analysis')
+    plt.xlabel(f'Variable: {choice}')
+    st.pyplot(fig2)
 
 
     #####ADD MAP
