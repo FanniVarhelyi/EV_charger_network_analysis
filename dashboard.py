@@ -150,6 +150,7 @@ elif option == 'Datasets':
         #100% stacked bar chart, blue-red
         df2 = df.groupby(['State','Political party (county)'])['County'].agg('count').reset_index()
         df2['County'] = df2['County'].astype(int)
+        df2.fillna(0, inplace=True)
         fig = px.histogram(df2, 
                 y='State', 
                 x='County', 
@@ -163,13 +164,13 @@ elif option == 'Datasets':
                         yaxis_title="State",
                         xaxis_title='County-level political association') 
 
-        fig.show()
+        st.pyplot(fig)
     else:
-        fig = plt.figure(figsize=(8, 6))
+        fig2 = plt.figure(figsize=(8, 6))
         sns.boxplot(x=df[choice])
         plt.title('Exploratory data analysis')
         plt.xlabel(f'Variable: {choice}')
-        st.pyplot(fig)
+        st.pyplot(fig2)
 
 
     #####ADD MAP
