@@ -149,6 +149,7 @@ elif option == 'Datasets':
         #group by on state level, # of counties republican / democrat
         #100% stacked bar chart, blue-red
         df2 = df.groupby(['State','Political party (county)'])['County'].agg('count').reset_index()
+        df2['County'] = df2['County'].astype(int)
         fig = px.histogram(df2, 
                 y='State', 
                 x='County', 
