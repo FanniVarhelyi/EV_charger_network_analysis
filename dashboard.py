@@ -162,22 +162,22 @@ elif option == 'Datasets':
        '% of Hispanic population',
        '% of the population in poverty',
        '% of white population']
-    choice = st.selectbox('Variable', variables)
+    choice2 = st.selectbox('Variable ', variables)
 
-    if choice == 'Political party (county)':
+    if choice2 == 'Political party (county)':
     # Define the discrete color map for political parties
         color_map = {'REPUBLICAN': 'red', 'DEMOCRAT': 'blue'}
 
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice2,
                             color_discrete_map=color_map,
                             scope="usa",
-                            labels={choice: 'Political Party'})
+                            labels={choice2: 'Political Party'})
     else:
         # Use a continuous color scale
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice2,
                             color_continuous_scale="Viridis",
                             scope="usa",
-                            labels={choice: choice})
+                            labels={choice2: choice2})
 
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     #fig.show()
@@ -186,14 +186,14 @@ elif option == 'Datasets':
     st.markdown('Looking at counties on the country level, however, can make it difficult to understand local characteristics, so we can also zoom in on a given state and then look at our variables. Exploratory data analysis and visualizations such as these can help us better understand the data, which in turn will influence some of our design choices later on for the analysis.')
 
     ##ADD MAP ON STATE LEVEL
-    choice = st.selectbox('Variable', variables)
-    choice2 = st.selectbox('State', df.state_y.unique().tolist())
+    choice3 = st.selectbox('Variable:', variables)
+    choice4 = st.selectbox('State', df.state_y.unique().tolist())
 
-    filtered = df[df['State'] == choice2]
-    fig = px.choropleth(filtered, geojson=counties, locations='FIPS', color=choice,
+    filtered = df[df['State'] == choice4]
+    fig = px.choropleth(filtered, geojson=counties, locations='FIPS', color=choice3,
                             color_continuous_scale="Viridis",
                             scope="usa",
-                            labels={choice}
+                            labels={choice3}
                             )
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
@@ -289,32 +289,32 @@ elif option == 'Analysis and results':
        '% of Hispanic population',
        '% of the population in poverty',
        '% of white population']
-    choice = st.selectbox('Variable', variables)
+    choice5 = st.selectbox('Variable or cluster:', variables)
 
-    if choice == 'Political party (county)':
+    if choice5 == 'Political party (county)':
     # Define the discrete color map for political parties
         color_map = {'REPUBLICAN': 'red', 'DEMOCRAT': 'blue'}
 
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
                             color_discrete_map=color_map,
                             scope="usa",
-                            labels={choice: 'Political Party'})
-    elif choice == 'Cluster':
+                            labels={choice5: 'Political Party'})
+    elif choice5 == 'Cluster':
         df['Cluster'] = df['Cluster'].astype(str)
         # Define a discrete color map for clusters
         # You can customize this list of colors as needed
         cluster_colors = px.colors.qualitative.Plotly
 
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
                         color_discrete_sequence=cluster_colors[:7],
                         scope="usa",
-                        labels={choice: 'Clusters'})
+                        labels={choice5: 'Clusters'})
     else:
         # Use a continuous color scale
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice,
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
                             color_continuous_scale="Viridis",
                             scope="usa",
-                            labels={choice: choice})
+                            labels={choice5: choice5})
 
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     #fig.show()
