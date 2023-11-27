@@ -20,7 +20,7 @@ sum_stats = load_data('Input files/sum_stats.csv')
 clustering = load_data('Input files/clustering_results.csv')
 clust_stats = load_data('Input files/cluster_stats.csv')
 
-@st.cache(allow_output_mutation=True)
+@st.cache_data(allow_output_mutation=True)
 def load_json_data(filename):
     with open(filename, 'r') as infile:
         data = json.load(infile)
@@ -168,7 +168,7 @@ elif option == 'Datasets':
         sns.boxplot(x=df[choice])
         plt.title('Exploratory data analysis')
         plt.xlabel(f'Variable: {choice}')
-        plt.show()
+        st.pyplot(fig)
 
 
     #####ADD MAP
