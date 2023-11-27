@@ -312,13 +312,21 @@ elif option == 'Analysis and results':
                             scope="usa",
                             labels={choice5: 'Political Party'})
     elif choice5 == 'Cluster':
-        #df['Cluster'] = df['Cluster'].astype(str)
+        clustering['Cluster'] = clustering['Cluster'].astype(str)
         # Define a discrete color map for clusters
         # You can customize this list of colors as needed
-        cluster_colors = px.colors.qualitative.Plotly
+        cluster_colors = [
+        '#6a0dad',  # Dark purple
+        '#9b30ff',  # Light purple
+        '#008000',  # Office Green
+        '#00ff00',  # Lime Green
+        '#0000ff',  # Blue
+        '#00ced1',  # Dark Turquoise
+        '#7fffd4'   # Aquamarine
+        ]
 
         fig = px.choropleth(clustering, geojson=counties, locations='FIPS', color=choice5,
-                        color_discrete_sequence=cluster_colors[:7],
+                        color_discrete_sequence=cluster_colors,
                         scope="usa",
                         labels={choice5: 'Clusters'})
     else:
