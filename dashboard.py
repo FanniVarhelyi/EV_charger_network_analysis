@@ -180,8 +180,8 @@ elif option == 'Datasets':
                             labels={choice: choice})
 
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    fig.show()
-    #st.pyplot(fig)
+    #fig.show()
+    st.pyplot(fig)
 
     st.markdown('Looking at counties on the country level, however, can make it difficult to understand local characteristics, so we can also zoom in on a given state and then look at our variables. Exploratory data analysis and visualizations such as these can help us better understand the data, which in turn will influence some of our design choices later on for the analysis.')
 
