@@ -20,7 +20,7 @@ sum_stats = load_data('Input files/sum_stats.csv')
 clustering = load_data('Input files/clustering_results.csv')
 clust_stats = load_data('Input files/cluster_stats.csv')
 
-@st.cache_data(allow_output_mutation=True)
+@st.cache_data
 def load_json_data(filename):
     with open(filename, 'r') as infile:
         data = json.load(infile)
