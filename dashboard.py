@@ -306,7 +306,7 @@ elif option == 'Analysis and results':
     # Define the discrete color map for political parties
         color_map = {'REPUBLICAN': 'red', 'DEMOCRAT': 'blue'}
 
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
+        fig = px.choropleth(clustering, geojson=counties, locations='FIPS', color=choice5,
                             color_discrete_map=color_map,
                             scope="usa",
                             labels={choice5: 'Political Party'})
@@ -316,13 +316,13 @@ elif option == 'Analysis and results':
         # You can customize this list of colors as needed
         cluster_colors = px.colors.qualitative.Plotly
 
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
+        fig = px.choropleth(clustering, geojson=counties, locations='FIPS', color=choice5,
                         color_discrete_sequence=cluster_colors[:7],
                         scope="usa",
                         labels={choice5: 'Clusters'})
     else:
         # Use a continuous color scale
-        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
+        fig = px.choropleth(clustering, geojson=counties, locations='FIPS', color=choice5,
                             color_continuous_scale="Viridis",
                             scope="usa",
                             labels={choice5: choice5})
