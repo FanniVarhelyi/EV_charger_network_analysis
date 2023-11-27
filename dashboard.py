@@ -190,12 +190,21 @@ elif option == 'Datasets':
     choice4 = st.selectbox('State', df.State.unique().tolist())
 
     filtered = df[df['State'] == choice4]
-    fig = px.choropleth(filtered, geojson=counties, locations='FIPS', color=choice3,
-                            color_continuous_scale="Viridis",
-                            scope="usa",
-                            labels={choice3}
-                            )
-    fig.update_geos(fitbounds="locations", visible=False)
+    if choice3 == 'Political party (county)':
+        color_map = {'REPUBLICAN': 'red', 'DEMOCRAT': 'blue'}
+        fig = px.choropleth(filtered, geojson=counties, locations='FIPS', color=choice3,
+                                color_discrete_map=color_map,
+                                scope="usa",
+                                labels={choice3}
+                                )
+        fig.update_geos(fitbounds="locations", visible=False)
+    else:
+        fig = px.choropleth(filtered, geojson=counties, locations='FIPS', color=choice3,
+                                color_continuous_scale="Viridis",
+                                scope="usa",
+                                labels={choice3}
+                                )
+        fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig, use_container_width=True)
 
