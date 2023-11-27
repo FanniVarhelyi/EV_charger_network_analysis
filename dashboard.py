@@ -164,7 +164,7 @@ elif option == 'Datasets':
 
         fig.show()
     else:
-        plt.figure(figsize=(8, 6))
+        fig = plt.figure(figsize=(8, 6))
         sns.boxplot(x=df[choice])
         plt.title('Exploratory data analysis')
         plt.xlabel(f'Variable: {choice}')
