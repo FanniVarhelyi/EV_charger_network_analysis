@@ -8,5 +8,6 @@ mizani==0.9.2
 streamlit==1.25.0
 streamlit_extras==0.3.0
 seaborn==0.12.2
+json==2.0.9
 openpyxl
 

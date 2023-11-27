@@ -8,6 +8,7 @@ import plotly.express as px
 import matplotlib.patches as mpatches
 from plotly.subplots import make_subplots
 import seaborn as sns
+import json
 
 #import the data
 @st.cache_data
@@ -18,6 +19,14 @@ charger_snap = load_data('Input files/charger_snap.csv')
 sum_stats = load_data('Input files/sum_stats.csv')
 clustering = load_data('Input files/clustering_results.csv')
 clust_stats = load_data('Input files/cluster_stats.csv')
+
+@st.cache(allow_output_mutation=True)
+def load_json_data(filename):
+    with open(filename, 'r') as infile:
+        data = json.load(infile)
+    return data
+
+counties = load_json_data('counties.json')
 
 # Note: the data is already preprocessed which is not included in this file (will be included in the final project submission)
 
@@ -156,7 +165,7 @@ elif option == 'Datasets':
         fig.show()
     else:
         plt.figure(figsize=(8, 6))
-        sns.boxplot(x=ev_chargers[choice])
+        sns.boxplot(x=df[choice])
         plt.title('Exploratory data analysis')
         plt.xlabel(f'Variable: {choice}')
         plt.show()
