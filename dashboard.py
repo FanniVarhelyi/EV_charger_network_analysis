@@ -157,7 +157,7 @@ elif option == 'Datasets':
                 title="Party Distribution by State",
                 color='Political party (county)',
                 barnorm='percent',
-                orientation='h', 
+                #orientation='h', 
                 text_auto=False)
 
         fig.update_layout(barmode='stack', 
