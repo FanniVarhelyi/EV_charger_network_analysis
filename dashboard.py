@@ -40,6 +40,7 @@ map = load_geodata('Input files/map.gpkg')
 
 ## Data preprocessing
 df['FIPS'] = df['FIPS'].astype(int).astype(str).str.zfill(5)
+clustering['FIPS'] = clustering['FIPS'].astype(int).astype(str).str.zfill(5)
 
 
 ########################
