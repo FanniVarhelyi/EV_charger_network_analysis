@@ -187,7 +187,7 @@ elif option == 'Datasets':
 
     ##ADD MAP ON STATE LEVEL
     choice3 = st.selectbox('Variable:', variables)
-    choice4 = st.selectbox('State', df.state_y.unique().tolist())
+    choice4 = st.selectbox('State', df.State.unique().tolist())
 
     filtered = df[df['State'] == choice4]
     fig = px.choropleth(filtered, geojson=counties, locations='FIPS', color=choice3,
