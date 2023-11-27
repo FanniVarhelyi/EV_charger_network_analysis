@@ -289,47 +289,47 @@ elif option == 'Analysis and results':
 
     st.markdown('Alternatively, we could also take a look at a map again to visualize the clusters.')
 
-    st.image('Input images/plot_clusters.jpg')
+    #st.image('Input images/plot_clusters.jpg')
 
-    # variables = ['Cluster',
-    #              'Political party (county)',
-    #    '% of households with 2 or more cars',
-    #    'Number of Level 3 chargers', 'Number of Level 1 chargers',
-    #    'Number of Level 2 chargers',
-    #    '% of Non-Hispanic Black population',
-    #    '% of Hispanic population',
-    #    '% of the population in poverty',
-    #    '% of white population']
-    # choice5 = st.selectbox('Variable or cluster:', variables)
+    variables = ['Cluster',
+                 'Political party (county)',
+       '% of households with 2 or more cars',
+       'Number of Level 3 chargers', 'Number of Level 1 chargers',
+       'Number of Level 2 chargers',
+       '% of Non-Hispanic Black population',
+       '% of Hispanic population',
+       '% of the population in poverty',
+       '% of white population']
+    choice5 = st.selectbox('Variable or cluster:', variables)
 
-    # if choice5 == 'Political party (county)':
-    # # Define the discrete color map for political parties
-    #     color_map = {'REPUBLICAN': 'red', 'DEMOCRAT': 'blue'}
+    if choice5 == 'Political party (county)':
+    # Define the discrete color map for political parties
+        color_map = {'REPUBLICAN': 'red', 'DEMOCRAT': 'blue'}
 
-    #     fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
-    #                         color_discrete_map=color_map,
-    #                         scope="usa",
-    #                         labels={choice5: 'Political Party'})
-    # elif choice5 == 'Cluster':
-    #     df['Cluster'] = df['Cluster'].astype(str)
-    #     # Define a discrete color map for clusters
-    #     # You can customize this list of colors as needed
-    #     cluster_colors = px.colors.qualitative.Plotly
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
+                            color_discrete_map=color_map,
+                            scope="usa",
+                            labels={choice5: 'Political Party'})
+    elif choice5 == 'Cluster':
+        df['Cluster'] = df['Cluster'].astype(str)
+        # Define a discrete color map for clusters
+        # You can customize this list of colors as needed
+        cluster_colors = px.colors.qualitative.Plotly
 
-    #     fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
-    #                     color_discrete_sequence=cluster_colors[:7],
-    #                     scope="usa",
-    #                     labels={choice5: 'Clusters'})
-    # else:
-    #     # Use a continuous color scale
-    #     fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
-    #                         color_continuous_scale="Viridis",
-    #                         scope="usa",
-    #                         labels={choice5: choice5})
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
+                        color_discrete_sequence=cluster_colors[:7],
+                        scope="usa",
+                        labels={choice5: 'Clusters'})
+    else:
+        # Use a continuous color scale
+        fig = px.choropleth(df, geojson=counties, locations='FIPS', color=choice5,
+                            color_continuous_scale="Viridis",
+                            scope="usa",
+                            labels={choice5: choice5})
 
-    # fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-    # #fig.show()
-    # st.plotly_chart(fig, use_container_width=True)
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    #fig.show()
+    st.plotly_chart(fig, use_container_width=True)
     
 ########################################################################
 ## PAGE 5: CONCLUSIONS
