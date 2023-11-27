@@ -7,6 +7,7 @@ import geopandas as gpd
 import plotly.express as px
 import matplotlib.patches as mpatches
 from plotly.subplots import make_subplots
+import seaborn as sns
 
 #import the data
 @st.cache_data
@@ -31,10 +32,14 @@ map = load_geodata('Input files/map.gpkg')
 ########################
 
 # Page layout options
+st.sidebar.title("Spatial clustering analysis: a tutorial")
+
 option = st.sidebar.radio(
-    "Spatial clustering analysis: a tutorial\n\nTable of contents:",
+    "Pages:",
     ('Introduction', 'Datasets', 'Clustering intro', 'Analysis and results', 'Conclusion', 'References')
 )
+st.sidebar.title("About")
+st.sidebar.info('This is a tutorial and demonstration on how to use publicly available data and unsupervised machine learning to analyze the EV network in the U.S. You can find all the corresponding code in this [GitHub](https://github.com/FanniVarhelyi/EV_charger_network_analysis.git) repo.\n\nDeveloped by Fanni Varhelyi')
 
 
 
@@ -45,7 +50,10 @@ if option == 'Introduction':
     st.image('Input images/cover.jpg')
     st.subheader(":green[Welcome!]")
 
-    st.markdown('Climate change is an immediate and existential threat to our society that we must address within a relatively short time period. A study from 2015 estimates that by 2050, greenhouse gas emission reduction from EV adoption could reach approximately 1.5 billion tons of CO2 per year (Lutsey, 2015). Any potential future benefit is largely dependent on how quickly the technology will be adapted, which, in turn, depends on several factors as multiple authors point out, ranging from technical specifications such as battery range or charging network density to social ones (e.g., Tran et al., 2012; Barkenbus, 2020).\n\nA key constraint to further EV adoption is the density of the charging network (mentioned by e.g., Tran et al., 2012). Expanding this network is also a priority in recent U.S. policy: in February, the White House detailed its plan on how to spend $7.5 billion on EV charging, as originally outlined in the Bipartisan Infrastructure Law (The White House, 2023).\n\nOne further factor potentially influencing this overall view  is the distribution of both the vehicles themselves, and the charging stations, and any disparities associated with either. These disparities have also been investigated by researchers: for instance, Roy and Law looked at charging station placement disparities in Orange County, California (2020).\n\nThe goal of this project is to help researchers, policymakers, or anyone with a basic programming skillset learn about how to leverage easily accessible datasets and unspervised machine learning methods to better understand current trends in the United States EV networks. Hopefully, this tutorial provides a useful starting point when thinking about or analyzing the expansion of the EV network in the coming years.')
+    st.markdown('If you\'re here, you\'re probably interested in either climate change related data science, spatial analysis of green infrastructure in the U.S., or in electric cars. The goal of this short tutorial is to showcase how analysis could be performed on publicly easily available datasets, and how such analysis can inform public policy decision-making.\n\nHopefully, this project can aid to help researchers, policymakers, or anyone with a basic programming skillset learn about how to leverage easily accessible datasets and unspervised machine learning methods to better understand current trends in the United States EV networks. This is intended only as an introduction and a starting point point when thinking about or analyzing the expansion of the EV network in the coming years.')
+
+    st.subheader(":green[Why is the EV network important?]")
+    st.markdown('Climate change is an immediate and existential threat to our society that we must address within a relatively short time period. A study from 2015 estimates that by 2050, greenhouse gas emission reduction from EV adoption could reach approximately 1.5 billion tons of CO2 per year (Lutsey, 2015). Any potential future benefit is largely dependent on how quickly the technology will be adapted, which, in turn, depends on several factors as multiple authors point out, ranging from technical specifications such as battery range or charging network density to social ones (e.g., Tran et al., 2012; Barkenbus, 2020).\n\nA key constraint to further EV adoption is the density of the charging network (mentioned by e.g., Tran et al., 2012). Expanding this network is also a priority in recent U.S. policy: in February, the White House detailed its plan on how to spend $7.5 billion on EV charging, as originally outlined in the Bipartisan Infrastructure Law (The White House, 2023).\n\nOne further factor potentially influencing this overall view  is the distribution of both the vehicles themselves, and the charging stations, and any disparities associated with either. These disparities have also been investigated by researchers: for instance, Roy and Law looked at charging station placement disparities in Orange County, California (2020).\n\nOn the following pages, I will briefly introduce the data we\'re working with, the methodology (which will be a commonly used clustering algorithm called k means), and discuss the results. I will also create some map-based visualizations both for the data and the results.')
     
 ########################################################################
 ## PAGE 2: DATASETS
@@ -54,8 +62,9 @@ elif option == 'Datasets':
     st.image('Input images/datasets.jpg')
     st.subheader(":green[What should we look for?]")
 
-    st.markdown('When thinking about any analysis, it\'s important to ensure that our data is good quality, comes from a reputable source, and is up to date. While it\'s not always possible to achieve all of these, it\'s important to keep this in mind.\n\nIn this case, we\'re interested in the electric charging network present in the United States. This infromation can be accessed through various sources by end users, such as route planning apps. To get data that we can aanalyze and work with, I will leverage a dataset published by the U.S. Energy of Department.\n\nI also mentioned potentially being interested in disparaties. When looking for socio-economics data, the survey-based information periodically published by the U.S. Census Bureau is typically a good source. In this case, we will work with data sourced from the American Consumer Survey.\n\nFinally, given the polarization about climate change between the political parties in the U.S., I thought it might be an interesting additional aspect to look at party affiliation. To do so, I will leverage a dataset upblished by MIT that includes the votes cast in the last Presidential election. I will categorize counties and states based on this information.')
+    st.markdown('When thinking about any analysis, it\'s important to ensure that our data is good quality, comes from a reputable source, and is up to date. While it\'s not always possible to achieve all of these, it\'s important to keep this in mind. For this project, we\'re interested in the electric charging network present in the United States, as well as some additional information about the people living at specific locations.\n\n**Dataset 1: EV charger locations**\nThis information can be accessed through various sources by end users, such as route planning apps. To get data that we can aanalyze and work with, I will leverage a dataset published by the U.S. Energy of Department. This dataset contains the location of each alternate fuel source in the United States, including EV chargers. After filtering everything else out, we can access the precise location, street address, provider, and type of charger among other qualities. There are 58 857 chargers in this list.\n\n**Dataset 2: Demographics of the United States**\nI also mentioned potentially being interested in disparaties. When looking for socio-economics data, the survey-based information periodically published by the U.S. Census Bureau is typically a good source. In this case, we will work with data sourced from the American Consumer Survey. We will leverage 5-year averaged results, and focus on key potential attributes: total population, household size, vehicle ownership, race & ethnicity and poverty on a census tract level. Since the information is on a census tract level, our second dataset contains information on 72 877 tracts. \n\n**Dataset 3: Election results on a county level**\nFinally, given the polarization about climate change between the political parties in the U.S., I thought it might be an interesting additional aspect to look at party affiliation. To do so, I will leverage a Presidential elections dataset published by MIT. This dataset includes state, county, year, and the number of votes cast for each candidate since 2000. I will focus on the latest election, and will categorize counties and states as either Republican and Democratic based on the winner of the latest Presidential election in that given county or state.')
 
+    st.divider()
     st.subheader(":green[Snapshot: EV charger data]")
 
     st.markdown('The primary data source for this research is the location of electric vehicle charging stations in the United States, which is available from the U.S. Department of Energy. This dataset contains the location of 58 857 charging stations and contains 71 further attributes. Of these attributes, the most important ones for this project will be location. Here\'s a summary look on the state level of the available total charging stations:')
@@ -81,9 +90,10 @@ elif option == 'Datasets':
 
     st.code(code,language='python')
 
+    st.divider()
     st.subheader(":green[Combining all of our data for analysis]")
 
-    st.markdown('When working with spatial data, it\'s important to understand the different levels of aggregation (geometries, shapes). For example, when thinking about the United States and working with census data, we can look at states, counties, census tracts, census blocks. Some data is available on the census tract level which is usually used for analysis. In our case, we have the zip code and exact coordinates of each charging station in the U.S., and we can check which census tract these points correspond to. To do so, we need to work with shapefiles. Shapefiles are, in essence, datasets that contain a specific column that outlines the border of a polygon shape (for example, coordinates of the border of a state or country). When we have a spahefile like this, we can check if any point is included within its boudaries, and count how many points we found. We will need the gopandas package to achieve this.')
+    st.markdown('When working with spatial data, it\'s important to understand the different levels of aggregation (geometries). For example, when thinking about the United States and working with census data, we can look at states, counties, census tracts, census blocks. Some data is available on the census tract level which is usually used for analysis. In our case, we have the zip code and exact coordinates of each charging station in the U.S., and we can check which census tract these points correspond to. To do so, we need to work with shapefiles. Shapefiles are, in essence, datasets that contain a specific column that outlines the border of a polygon shape (for example, coordinates of the border of a state or country). When we have a shapefile like this, we can check if any point is included within its boudaries, and count how many points we found. We will need the gopandas package to achieve this.\n\nFor our project, we will leverage the shape files associated with census tracts (also published by the Census Bureau), and for each EV charger station, we will match the point with the polygon shape and its I.D. that contains it. Once we concluded this, we can change the unit of our analysis from individual points to census tracts by aggregating all our information on the census tract level, using the acquired I.D.s, called GEOID that corresponds to each census tract.')
 
     code2 = '''import geopandas as gpd
     check_charger_in_tract = gpd.sjoin(charger_list, us_census_tracts, how="inner", op='intersects')
@@ -102,13 +112,23 @@ elif option == 'Datasets':
 
     st.code(code2,language='python')
 
-    st.markdown('Once we have the number of chargers per census tract, we can easily merge this with any census variables we would like to include in our analysis. In this case, I selected total population, cars per household, poverty, and racial attributes. When working with data like this, it\'s often useful to check the summary statistics for the relevant variables:')
+    st.markdown('Once we have the number of chargers per census tract, we can easily merge this with any census variables we would like to include in our analysis. In this case, I selected total population, cars per household, poverty, and racial & ethnic attributes. When working with data like this, it\'s often useful to check the summary statistics for the relevant variables:')
 
     st.table(sum_stats.iloc[:4,:5])
     
     st.markdown('Unfortunately, when looking at our third dataset, we can see that information is not available on a census tract level. This is understadable: tracts are smaller than voter districts. Thus, we will need to aggregate again to have the same unit of analysis for all of our data. In this case, this will be a county level. Once we\'ve done this, and selected the relevant variables, we have our data ready for analysis!')
 
     st.table(df.head(5))
+
+    st.markdown('Another interesting way to look at our data and understand it\'s attributes is using visualizations. The next graph showcases the distribution of a given variable, while the following map of the United States shows the county-level value of a selected variable.')
+
+    ####ADD BOXPLOT
+
+    #####ADD MAP
+
+    st.markdown('Looking at counties on the country level, however, can make it difficult to understand local characteristics, so we can also zoom in on a given state and then look at our variables. Exploratory data analysis and visualizations such as these can help us better understand the data, which in turn will influence some of our design choices later on for the analysis.')
+
+    ##ADD MAP ON STATE LEVEL
 
 
     st.caption('*Data sources: [Census Bureau](https://www.census.gov/programs-surveys/acs), [Department of Energy](https://afdc.energy.gov/fuels/electricity_locations.html#/find/nearest?fuel=ELEC), [MIT Election Data and Science Lab](https://electionlab.mit.edu/data).*')
@@ -119,11 +139,17 @@ elif option == 'Datasets':
 
 elif option == 'Clustering intro':
     st.image('Input images/clustering.jpg')
+
+    st.subheader(":green[A few words on unsupervised machine learning]")
+
+    st.markdown('Machine learning is a useful tool we can deploy to analyze any kind of data. It\'s relatively straightforward when we have a target, outcome, or class label we\'re interested in. For example, we could use a model to determine if a tweet is positive or negative based on the words in contains. We can also leverage machine learning if we\'d like to learn about a set of attributes and how they relate to each other without having a specific end goal in mind. We could simplify dozens or hundreds of attributes to a few key summary metrics, or group observations into clusters based on their characteristics.')
+
+    st.divider()
     st.subheader(":green[What is clustering?]")
 
-    st.markdown('Clustering is a well-known unsupervised machine learning method used to identify homogeneous groups using information within a dataset. We can use the multi-dimensional shape of the data, the density, or any hierarchical attributes for the clustering analysis.')
+    st.markdown('Clustering is a well-known unsupervised machine learning method used to identify homogeneous groups using information within a dataset.\n\nClustering can help us identify if there are any subsets of the data that belong together based on some shared attributes or set of attributes. Even if we don\'t know how many clusters there are, algorithms can help divide our data to as many groups as many makes sense. These groupring are typically made by trying to minimize within-cluster variation, or SSE, or potentially by maximizing variation across clusters. The below illustration shows how we can find different number of clusters in 2-dimensional data. When we only have 2 or 3 dimension (2 or 3 variables) we can even look at the data and determine clusters by ourselves. Once we\'re working in higher dimensions, this becomes impossible. As our data has 10 variables we will use for clustering (more on this later), we can\'t identify clusters thies easily anymore.')
 
-    st.markdown('While density could be an interesting aspect of this spatial data, the urban-rural density difference would likely hamper the effectiveness of any density-based research. The data isn’t hierarchical. Thus, I plan on leveraging K-means clustering.')
+    st.image('Input images/clusters.jpg')
     
     st.divider()
     st.subheader(":green[K-means method]")
@@ -139,7 +165,12 @@ elif option == 'Analysis and results':
     st.image('Input images/results.jpg')
     st.subheader(":green[Analysis]")
 
-    st.markdown('For our analysis, we will leverage the popular machine learning library scicit learn, or sklearn. Sklearn can help both preprocess our data and implement the clustering model.\n\nPreprocessing is important when clustering: it ensures we account for differences in scale. In our case, many of our variables are already on the same scale: we`re using percentages for motiple variables. Regardless, it makes sense to standardize all variables. This can be achieved as follows:')
+    st.markdown('For our analysis, we will leverage the popular machine learning library scicit learn, or sklearn. Sklearn can help both preprocess our data and implement the clustering model.\n\nPreprocessing is important when clustering: it ensures we account for differences in scale. In our case, many of our variables are already on the same scale: we`re using percentages for motiple variables. Regardless, it makes sense to standardize all variables.\n\nBefore this step, we also need to drop all columns that contain information that is unnecessary for the clustering itself. These are usually columns containing identifying information, such as the county name or county fips number. I also decided to not inlcude state as a variable. Thus, the final variable list is as follows:')
+
+    #check if works!!!
+    st.list('Vehicle ownership: percentage of households with 2 or more cars', 'Number of Level 3 chargers', 'Number of Level 2 chargers', 'Number of Level 1 chargers', 'Percentage of white population', 'Percentage of Non-Hispanic Black population', 'Percentage of Hispanic population', 'Percentage of the population below the poverty line', 'County political affiliation', 'state political affiliation')
+                
+    st.markdown('Once we have selected only these variables, we can then normalize our data:')
 
     code3 = '''
     from sklearn.preprocessing import StandardScaler
@@ -183,6 +214,8 @@ elif option == 'Analysis and results':
 ######################################################################## 
 elif option == 'Conclusion':
     st.image('Input images/conclusion.jpg')
+
+    st.markdown('In this tutorial, we learned how to merge publicly available datasets with different levels of aggregation, and how to use clustering to start to understand some patterns in EV charger placements in the United States.\n\nOur results indicate California counties are outliers even compared to other rich, Democrat-leaning counties. This can be alarming given that California is just a small subset of the country and EV adoption in the rest of the country could have lead to, for example, big cities in other states being similar to big cities in California.\n\nAnother key finding is that county political affiliation matters: most counties clustered together (for clusters 1, 2, 3, 5, 7) have very similar or the same political affiliations.\n\nThese preliminary results can help guide further research. For example, we could investigate if there are other characteristics neglegted here that could be important. We could look at the different cluster attributes and think how these could influence policymaking. For example, it seems like Republican counties tend to be similar and might even have less charging stations. Federal policy could focus on incentives to increase adoption in these areas. We could also look at the results on poverty and race & ethnicity, and further try to understand where EV chargers lag behind (such as in cluster 4, with smaller number of charging stations and high poverty). We could zoom in on these counties and try to better understand what the issue is, and if state-level incentives could help increase the number of charging stations. We should probably also look at population density, overall population and roads in any given county to understand them better.')
 
 ########################################################################
 ## PAGE 6: REFS
