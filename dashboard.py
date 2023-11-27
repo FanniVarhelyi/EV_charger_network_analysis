@@ -29,6 +29,10 @@ def load_geodata(filename):
 map = load_geodata('Input files/map.gpkg')
 
 
+## Data preprocessing
+df['FIPS'] = df['FIPS'].astype(int).astype(str).str.zfill(5)
+
+
 ########################
 
 # Page layout options
@@ -62,7 +66,7 @@ elif option == 'Datasets':
     st.image('Input images/datasets.jpg')
     st.subheader(":green[What should we look for?]")
 
-    st.markdown('When thinking about any analysis, it\'s important to ensure that our data is good quality, comes from a reputable source, and is up to date. While it\'s not always possible to achieve all of these, it\'s important to keep this in mind. For this project, we\'re interested in the electric charging network present in the United States, as well as some additional information about the people living at specific locations.\n\n**Dataset 1: EV charger locations**\nThis information can be accessed through various sources by end users, such as route planning apps. To get data that we can aanalyze and work with, I will leverage a dataset published by the U.S. Energy of Department. This dataset contains the location of each alternate fuel source in the United States, including EV chargers. After filtering everything else out, we can access the precise location, street address, provider, and type of charger among other qualities. There are 58 857 chargers in this list.\n\n**Dataset 2: Demographics of the United States**\nI also mentioned potentially being interested in disparaties. When looking for socio-economics data, the survey-based information periodically published by the U.S. Census Bureau is typically a good source. In this case, we will work with data sourced from the American Consumer Survey. We will leverage 5-year averaged results, and focus on key potential attributes: total population, household size, vehicle ownership, race & ethnicity and poverty on a census tract level. Since the information is on a census tract level, our second dataset contains information on 72 877 tracts. \n\n**Dataset 3: Election results on a county level**\nFinally, given the polarization about climate change between the political parties in the U.S., I thought it might be an interesting additional aspect to look at party affiliation. To do so, I will leverage a Presidential elections dataset published by MIT. This dataset includes state, county, year, and the number of votes cast for each candidate since 2000. I will focus on the latest election, and will categorize counties and states as either Republican and Democratic based on the winner of the latest Presidential election in that given county or state.')
+    st.markdown('When thinking about any analysis, it\'s important to ensure that our data is good quality, comes from a reputable source, and is up to date. While it\'s not always possible to achieve all of these, it\'s important to keep this in mind. For this project, we\'re interested in the electric charging network present in the United States, as well as some additional information about the people living at specific locations.\n\n**Dataset 1: EV charger locations**\n\nThis information can be accessed through various sources by end users, such as route planning apps. To get data that we can aanalyze and work with, I will leverage a dataset published by the U.S. Energy of Department. This dataset contains the location of each alternate fuel source in the United States, including EV chargers. After filtering everything else out, we can access the precise location, street address, provider, and type of charger among other qualities. There are 58 857 chargers in this list.\n\n**Dataset 2: Demographics of the United States**\n\nI also mentioned potentially being interested in disparaties. When looking for socio-economics data, the survey-based information periodically published by the U.S. Census Bureau is typically a good source. In this case, we will work with data sourced from the American Consumer Survey. We will leverage 5-year averaged results, and focus on key potential attributes: total population, household size, vehicle ownership, race & ethnicity and poverty on a census tract level. Since the information is on a census tract level, our second dataset contains information on 72 877 tracts. \n\n**Dataset 3: Election results on a county level**\n\nFinally, given the polarization about climate change between the political parties in the U.S., I thought it might be an interesting additional aspect to look at party affiliation. To do so, I will leverage a Presidential elections dataset published by MIT. This dataset includes state, county, year, and the number of votes cast for each candidate since 2000. I will focus on the latest election, and will categorize counties and states as either Republican and Democratic based on the winner of the latest Presidential election in that given county or state.')
 
     st.divider()
     st.subheader(":green[Snapshot: EV charger data]")
@@ -123,6 +127,40 @@ elif option == 'Datasets':
     st.markdown('Another interesting way to look at our data and understand it\'s attributes is using visualizations. The next graph showcases the distribution of a given variable, while the following map of the United States shows the county-level value of a selected variable.')
 
     ####ADD BOXPLOT
+    variables = ['Political party (county)',
+       '% of households with 2 or more cars',
+       'Number of Level 3 chargers', 'Number of Level 1 chargers',
+       'Number of Level 2 chargers',
+       '% of Non-Hispanic Black population',
+       '% of Hispanic population',
+       '% of the population in poverty',
+       '% of white population']
+    choice = st.selectbox('Variable', variables)
+    if choice == 'Political party  (county)':
+        #group by on state level, # of counties republican / democrat
+        #100% stacked bar chart, blue-red
+        df2 = df.groupby(['State','Political party (county)'])['County'].agg('count').reset_index()
+        fig = px.histogram(df2, 
+                y='State', 
+                x='County', 
+                title="Party Distribution by State",
+                color='Political party (county)',
+                barnorm='percent',
+                orientation='h', 
+                text_auto=False)
+
+        fig.update_layout(barmode='stack', 
+                        yaxis_title="State",
+                        xaxis_title='County-level political association') 
+
+        fig.show()
+    else:
+        plt.figure(figsize=(8, 6))
+        sns.boxplot(x=ev_chargers[choice])
+        plt.title('Exploratory data analysis')
+        plt.xlabel(f'Variable: {choice}')
+        plt.show()
+
 
     #####ADD MAP
 
