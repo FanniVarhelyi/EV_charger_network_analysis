@@ -26,7 +26,7 @@ def load_json_data(filename):
         data = json.load(infile)
     return data
 
-counties = load_json_data('counties.json')
+counties = load_json_data('Input files/counties.json')
 
 # Note: the data is already preprocessed which is not included in this file (will be included in the final project submission)
 
